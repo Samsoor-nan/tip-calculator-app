@@ -78,6 +78,7 @@
       font-size: 30px;
       font-weight: 700;
       border: none;
+      border-radius: 5px;
 
 
 
@@ -97,7 +98,7 @@
     .tip-percentage {
       margin-top: 20px;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
       grid-gap: 10px;
 
 
@@ -125,6 +126,7 @@
       font-weight: 700;
       border: none;
       font-size: 30px;
+      border-radius: 5px;
     }
 
     input.num-of-pep-lab {
@@ -174,7 +176,6 @@
     }
 
     .card-display {
-      border: 1px solid red;
       width: 50%;
       display: flex;
       flex-direction: column;
@@ -192,8 +193,11 @@
       padding: 20px;
 
     }
+    .res{
+      max-width: 100%;
+    }
 
-    .reset {
+    .res>.reset {
       position: relative;
       margin-top: 60px;
       padding: 20px;
@@ -203,6 +207,10 @@
       color: hsl(183, 88%, 20%);
       font-weight: 700;
       font-size: 25px;
+      width: 100%;
+    }
+    .res>.reset:hover{
+      background-color: hsl(172, 41%, 63%);
     }
 
     .t-a-l,
@@ -244,6 +252,69 @@
       border: 1px solid hsl(185, 50%, 72%);
 
     }
+    .tooltip{
+      position: relative;
+     
+    }
+     .tooltip-t{
+      visibility: hidden;
+      position: absolute;
+      float: right;
+      top: -30px;
+      right: 0px;
+      color: burlywood;
+      
+      text-align: center;
+      
+    }
+    @media (max-width:1000px) {
+      .main{
+        max-width:375px;
+        padding:200px 0px 0px 0px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      .main-card{
+        display: flex;
+        flex-direction: column;
+        border-radius: 20px 20px 0px 0px;
+      }
+      .card-boxes{
+        margin: 0px;
+        padding: 0px;
+       width: 100%;
+      }
+      .card-display{
+        margin: 30px 0px 0px 0px;
+        padding: 0px;
+       width: 100%;
+      }
+      .res>.reset{
+        margin: auto;
+        width: 100%;
+        margin: 0px;
+      }
+      .res{
+        max-width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+      }
+      .t-a-l,.t-t-l{
+        font-size: 40px;
+        
+        
+      }
+      .tip-amount{
+        padding: 20px 20px 0px 20px;
+      }
+      .tip-total{
+        padding: 0px 20px 20px 20px; 
+      }
+      
+    }
+    
   </style>
 </head>
 
@@ -273,8 +344,11 @@
         </div>
 
         <label class="numberofpeople"> Number of People</label>
+        <div class="tooltip">
+          <span id="ok" class="tooltip-t">Can't be zero</span>
         <input id="people" class="num-of-pep-lab" onchange="myf1(this.id)" type="number" placeholder="0">
-
+        
+      </div>
       </div>
       <!-- this is the display area of the card -->
       <div class="card-display">
@@ -296,8 +370,9 @@
         </div>
 
 
-
+         <div class="res"> 
         <button class="reset" onclick="res()">RESET</button>
+         </div>
       </div>
     </div>
 
@@ -328,7 +403,7 @@
 
     else {
 
-      document.getElementById(a).style.color = "black";
+      
       document.getElementById(a).style.background = "hsl(172, 67%, 45%)";
       clicked = a;
 
@@ -346,7 +421,14 @@
 
   function myf1(c) {
     numbp = document.getElementById(c).value;
-    cal();
+    if(numbp <=0){
+      document.getElementById("ok").style.visibility = "visible";
+      document.getElementById("people").style.border= "3px solid burlywood";
+    }
+    else{
+
+      cal();
+    }
   }
 
   function cal() {
@@ -358,10 +440,11 @@
       let tippp = tip / numbp;
 
       let amountf = (amount / numbp) + tippp;
+      let finaltip= Math.round(tippp);
+      let finalamount= Math.round(amountf);
 
-
-      document.getElementById('tipa').innerHTML = tippp;
-      document.getElementById('tta').innerHTML = amountf;
+      document.getElementById('tipa').innerHTML = "$" + finaltip; //tippp;
+      document.getElementById('tta').innerHTML = "$" + finalamount; //amountf;
     }
 
 
